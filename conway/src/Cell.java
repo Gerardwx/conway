@@ -1,6 +1,12 @@
 import java.util.Collection;
 
+/**
+ * Class that implements alive / dead state for next generation
+ */
 public abstract class Cell {
+    /**
+     * current and next generation states, alternating
+     */
     private final boolean states[];
     private Collection<Cell> neighbors;
 
@@ -12,24 +18,32 @@ public abstract class Cell {
         this.neighbors = neighbors;
     }
 
-    public boolean isFilled( ) {
+    public boolean isAlive( ) {
         return states[Clock.getInstance().getCycle()];
     }
 
+    /**
+     * calculate alive / dead for next cycle in clock
+     */
     public void calculateNext( ) {
-        Clock clock = Clock.getInstance();
-        int clk = clock.getCycle();
-        int nc = clock.getNextCycle();
-
-        int aliveNeighbors = (int) neighbors.stream().filter(c -> c.isFilled()).count();
+        int aliveNeighbors = (int) neighbors.stream().filter(c -> c.isAlive()).count();
         states[Clock.getInstance().getNextCycle( )] = compute(aliveNeighbors);
     }
-
-
-    protected abstract boolean compute(int numberAlive);
 
     public void setAlive() {
         assert Clock.getInstance().getCycle() == 0;
         states[0] = true;
     }
+
+    public void setDead() {
+        assert Clock.getInstance().getCycle() == 0;
+        states[0] = false;
+    }
+
+    /**
+     * implement rules for alive / dead next time cycle
+     * @param numberAlive
+     * @return True if cell will be alive
+     */
+    protected abstract boolean compute(int numberAlive);
 }

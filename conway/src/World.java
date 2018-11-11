@@ -1,38 +1,58 @@
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
+/**
+ * Implement rectangle worlds
+ */
 public class World {
-    final int width;
-    final int height;
+    final private int width;
+    final private int height;
     private final Cell[][] cells;
-    private final Display display;
 
-    public World(int width, int height, Display display) {
+    /**
+     *
+     * @param width: cells across
+     * @param height: cells down
+     * @param creator: specify type of cell to create
+     */
+    public World(int width, int height, BiFunction<Integer,Integer,Cell> creator) {
         this.width = width;
         this.height = height;
-        this.display = display;
         cells = new Cell[width][height];
-        //iterate(this::creation);
-        iterate( (x, y) -> cells[x][y] = new DebugCell(x,y));
+        iterate( (x, y) -> cells[x][y] = creator.apply(x,y));
         iterate(this::setNeighbors);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Cell get(int x, int y) {
+        return cells[x][y];
     }
 
     public void setAlive(int x, int y) {
         cells[x][y].setAlive();
-
     }
 
-    public void show() {
-        iterate((x, y) -> display.show(cells[x][y], x, y));
-        display.complete();
-    }
-
+    /**
+     * update all the next cycle cells values and then
+     * increment the clock
+     */
     public void step() {
         iterate((x, y) -> cells[x][y].calculateNext());
         Clock.getInstance().step();
     }
 
-    private void iterate(BiIntConsumer consumer) {
+    /**
+     * call method on each cell, sequentially
+     * @param consumer
+     */
+    public void iterate(CellConsumer consumer) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 consumer.apply(x, y);
@@ -40,11 +60,11 @@ public class World {
         }
     }
 
-    private void creation(int x, int y) {
-        cells[x][y] = create();
-    }
-
-
+    /**
+     * tell a cell who its neighbors are
+     * @param x
+     * @param y
+     */
     private void setNeighbors(int x, int y) {
         int offsets[][] = {
                 {-1, -1},
@@ -67,6 +87,13 @@ public class World {
         cells[x][y].setNeighbors(neighbors);
     }
 
+    /**
+     * get x or y coordinate of adjacent cell, taking into account wrap-around at edges of world
+     * @param value: starting point
+     * @param offset: change from starting (-1,0, or 1)
+     * @param size: limit of dimension (x or y)
+     * @return value + offset modulo size
+     */
     private int adjacent(int value, int offset, int size) {
         assert Math.abs(offset) <= 1;
         int returnVal = value + offset;
@@ -79,11 +106,11 @@ public class World {
         return returnVal;
     }
 
-    protected Cell create() {
-        return new ClassicCell();
-    }
-
-    private interface BiIntConsumer {
+    /**
+     * functional API for iterate
+     */
+    public interface CellConsumer {
+        //Use "apply" to be consistent with java.util.function API
         void apply(int x, int y);
     }
 }

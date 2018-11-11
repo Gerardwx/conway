@@ -1,20 +1,34 @@
-public class ConsoleDisplay implements  Display{
+/**
+ * show Life grid to console
+ */
+public class ConsoleDisplay {
+    final World world;
     int lastY;
 
-    public ConsoleDisplay() {
+    public ConsoleDisplay(World world) {
+        this.world = world;
         lastY = 0;
     }
 
-    @Override
-    public void complete() {
+    /**
+     * show cells, then a couple blank lines
+     */
+    public void show( ) {
+        world.iterate(this::show);
         lastY = 0;
         System.out.println();
         System.out.println();
     }
 
-    @Override
-    public void show(Cell cell, int x, int y) {
-        char mark = cell.isFilled() ? 'X' : '.';
+    /**
+     * show individual cell; add new line if Y has
+     * incremented since last call
+     * @param x
+     * @param y
+     */
+    private void show(int x, int y) {
+        Cell cell = world.get(x, y);
+        char mark = cell.isAlive() ? 'X' : '.';
         if (y > lastY) {
             System.out.println();
             lastY = y;

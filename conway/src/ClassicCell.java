@@ -16,7 +16,7 @@ public class ClassicCell extends Cell {
             case 1:
                 return false;
             case 2:
-                boolean selfAlive = isFilled();
+                boolean selfAlive = isAlive();
                 return selfAlive;
             case 3:
                 return true;
