@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 /**
@@ -10,18 +11,18 @@ public class World {
     private final Cell[][] cells;
 
     /**
-     *
-     * @param width: cells across
-     * @param height: cells down
+     * @param width:   cells across
+     * @param height:  cells down
      * @param creator: specify type of cell to create
      */
-    public World(int width, int height, BiFunction<Integer,Integer,Cell> creator) {
+    protected World(int width, int height, BiFunction<Integer, Integer, Cell> creator, int offsets[][]) {
         this.width = width;
         this.height = height;
         cells = new Cell[width][height];
-        iterate( (x, y) -> cells[x][y] = creator.apply(x,y));
-        iterate(this::setNeighbors);
+        iterate((x, y) -> cells[x][y] = creator.apply(x, y));
+        iterate((x, y) -> setNeighbors(x, y, offsets));
     }
+
 
     public int getWidth() {
         return width;
@@ -50,6 +51,7 @@ public class World {
 
     /**
      * call method on each cell, sequentially
+     *
      * @param consumer
      */
     public void iterate(CellConsumer consumer) {
@@ -62,21 +64,12 @@ public class World {
 
     /**
      * tell a cell who its neighbors are
+     *
      * @param x
      * @param y
      */
-    private void setNeighbors(int x, int y) {
-        int offsets[][] = {
-                {-1, -1},
-                {-1, 0},
-                {-1, 1},
-                {0, -1},
-                {0, 1},
-                {1, -1},
-                {1, 0},
-                {1, 1},
-        };
-        ArrayList<Cell> neighbors = new ArrayList(offsets.length);
+    private void setNeighbors(int x, int y, int offsets[][]) {
+        List<Cell> neighbors = new ArrayList<>(offsets.length);
         for (int i = 0; i < offsets.length; i++) {
             int xypair[] = offsets[i];
             int nx = adjacent(x, xypair[0], width);
@@ -89,9 +82,10 @@ public class World {
 
     /**
      * get x or y coordinate of adjacent cell, taking into account wrap-around at edges of world
-     * @param value: starting point
+     *
+     * @param value:  starting point
      * @param offset: change from starting (-1,0, or 1)
-     * @param size: limit of dimension (x or y)
+     * @param size:   limit of dimension (x or y)
      * @return value + offset modulo size
      */
     private int adjacent(int value, int offset, int size) {

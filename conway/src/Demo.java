@@ -8,7 +8,7 @@ public class Demo {
     public static final int LIMIT  = 100;
 
     public static void main(String[] args) {
-        World w = new World(10,10,(x,y) -> new ClassicCell());
+        World w = new ClassicWorld(10,10,(x,y) -> new ClassicCell());
         ConsoleDisplay display = new ConsoleDisplay(w);
         w.setAlive(5,6);
         w.setAlive(5,7);

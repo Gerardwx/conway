@@ -5,43 +5,44 @@ import java.util.Collection;
  */
 public abstract class Cell {
     /**
-     * current and next generation states, alternating
+     * current and next generation generations, alternating
      */
-    private final boolean states[];
+    private final boolean generations[];
     private Collection<Cell> neighbors;
 
-    public Cell( ) {
-        this.states = new boolean[2];
+    public Cell() {
+        this.generations = new boolean[2];
     }
 
     public void setNeighbors(Collection<Cell> neighbors) {
         this.neighbors = neighbors;
     }
 
-    public boolean isAlive( ) {
-        return states[Clock.getInstance().getCycle()];
+    public boolean isAlive() {
+        return generations[Clock.getInstance().getCycle()];
     }
 
     /**
      * calculate alive / dead for next cycle in clock
      */
-    public void calculateNext( ) {
+    public void calculateNext() {
         int aliveNeighbors = (int) neighbors.stream().filter(c -> c.isAlive()).count();
-        states[Clock.getInstance().getNextCycle( )] = compute(aliveNeighbors);
+        generations[Clock.getInstance().getNextCycle()] = compute(aliveNeighbors);
     }
 
     public void setAlive() {
-        assert Clock.getInstance().getCycle() == 0;
-        states[0] = true;
+        assert Clock.getInstance().isBeginningOfSimulation();
+        generations[Clock.getInstance().getCycle()] = true;
     }
 
     public void setDead() {
-        assert Clock.getInstance().getCycle() == 0;
-        states[0] = false;
+        assert Clock.getInstance().isBeginningOfSimulation();
+        generations[Clock.getInstance().getCycle()] = false;
     }
 
     /**
      * implement rules for alive / dead next time cycle
+     *
      * @param numberAlive
      * @return True if cell will be alive
      */

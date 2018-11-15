@@ -23,20 +23,29 @@ public class Clock {
     }
 
     /**
+     * @return true if simulation hasn't started (#step hasn't been called)
+     */
+    public boolean isBeginningOfSimulation( ) {
+        return counter == 0;
+    }
+
+    /**
      * increment the time
      */
     public void step() {
         counter++;
         cycle = (int) counter % 2;
-        nextCycle = (int)(counter + 1) %2;
+        nextCycle = (int) (counter + 1) % 2;
     }
 
     public long getCount() {
         return counter;
     }
 
+
     /**
      * current cycle
+     *
      * @return: 0 or 1
      */
     public int getCycle() {
@@ -45,6 +54,7 @@ public class Clock {
 
     /**
      * next cycle
+     *
      * @return: 0 or 1
      */
     public int getNextCycle() {

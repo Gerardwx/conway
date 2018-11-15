@@ -39,7 +39,7 @@ public class GraphicDemo extends Application  {
      */
     public GraphicDemo( ) {
         super( );
-        world = new World(100,100,(x,y)-> new ClassicCell());
+        world = new ClassicWorld(100,100,(x,y)-> new ClassicCell());
 
         startButton = new Button("Start");
         startButton.setOnAction(this::beginLife);
