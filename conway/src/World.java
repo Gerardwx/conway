@@ -50,11 +50,11 @@ public class World {
     }
 
     /**
-     * call method on each cell, sequentially
+     * iterate World coordinates, sequentially
      *
      * @param consumer
      */
-    public void iterate(CellConsumer consumer) {
+    public void iterate(WorldConsumer consumer) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 consumer.apply(x, y);
@@ -103,7 +103,7 @@ public class World {
     /**
      * functional API for iterate
      */
-    public interface CellConsumer {
+    public interface WorldConsumer {
         //Use "apply" to be consistent with java.util.function API
         void apply(int x, int y);
     }
