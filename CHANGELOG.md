@@ -1,9 +1,9 @@
 #Changelog
 
-## [Unreleased]
-### User selectable World Dimensions
-### CShape editor
-### Store CShapes to local storage
+## Unreleased
+- User selectable World Dimensions
+- CShape editor
+- Store CShapes to local storage
 
 ## 2018-11-18
 ### Added
