@@ -1,7 +1,10 @@
+package model;
+
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
- * World with classic definition of neighbor in rectanglar grid
+ * model.World with classic definition of neighbor in rectanglar grid
  */
 public class ClassicWorld extends World {
 
@@ -10,7 +13,7 @@ public class ClassicWorld extends World {
      * @param height: cells down
      * @param creator: specify type of cell to create
      */
-    public ClassicWorld(int width, int height, BiFunction<Integer,Integer,Cell> creator) {
+    public ClassicWorld(int width, int height, Function<Location ,Cell> creator) {
         super(width, height, creator, classicOffsets());
     }
 

@@ -1,3 +1,5 @@
+package model;
+
 /**
  * used this while getting the logic right (can look at x / y values in debugger)
  */

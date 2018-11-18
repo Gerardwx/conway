@@ -1,3 +1,9 @@
+package console;
+
+import model.Cell;
+import model.Location;
+import model.World;
+
 /**
  * show Life grid to console
  */
@@ -23,15 +29,13 @@ public class ConsoleDisplay {
     /**
      * show individual cell; add new line if Y has
      * incremented since last call
-     * @param x
-     * @param y
      */
-    private void show(int x, int y) {
-        Cell cell = world.get(x, y);
+    private void show(Location location) {
+        Cell cell = world.get(location);
         char mark = cell.isAlive() ? 'X' : '.';
-        if (y > lastY) {
+        if (location.getY() > lastY) {
             System.out.println();
-            lastY = y;
+            lastY = location.getY();
         }
         System.out.print(mark);
     }

@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Singleton timekeeper for simulation. Keeps lifetime
  * running total and binary values for current / next

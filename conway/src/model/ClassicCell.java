@@ -1,3 +1,5 @@
+package model;
+
 public class ClassicCell extends Cell {
     /**
      * Classic rules (from Wikipedia)
